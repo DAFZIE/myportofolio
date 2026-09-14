@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from main.models import Experience
+from main.models import Project
 
 
 def show_main(request):
@@ -24,3 +25,12 @@ def show_experience(request):
         "experience_list": Experience.objects.all(),
     }
     return render(request, "experience.html", context)
+
+
+def show_project(request):
+    context = {
+        "name": "Daffa Akmal Mahadaya Pasaribu",
+        "name_short": "Daffa",
+        "project_list": Project.objects.all(),
+    }
+    return render(request, "project.html", context)
