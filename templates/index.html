@@ -1,94 +1,69 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name_short }} - Portofolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header class="site-header">
-        <div class="container">
-            <a href="{% url 'main:show_main' %}" class="brand">{{ name_short }}</a>
-            <nav>
-                <a href="{% url 'main:show_main' %}">Profile</a>
-                <a href="{% url 'main:show_experience' %}">Experience</a>
-                <a href="{% url 'main:show_project' %}">Project</a>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero" id="profile">
-            <div class="container hero-grid">
-                <div class="hero-identity">
-                    <p class="hero-kicker">Computer Science &middot; Universitas Indonesia</p>
-                    <h1>Daffa Akmal Mahadaya Pasaribu</h1>
-                </div>
-                <div class="hero-photo">
-                    <div class="photo-block"></div>
-                    <img class="avatar" src="/static/img/Daffa.gif" alt="Photo of {{ name }}">
-                    <p class="photo-caption">Commisioned art of my furry character</p>
-                </div>
-
-                <div class="hero-details">
-                    <p class="bio">{{ bio }}</p>
-                    <dl class="meta-list">
-                        <div class="meta-row">
-                            <dt>NPM</dt>
-                            <dd>{{ npm }}</dd>
-                        </div>
-                        <div class="meta-row">
-                            <dt>Program</dt>
-                            <dd>{{ study_program }}</dd>
-                        </div>
-                    </dl>
-                    <div class="social-links">
-                        <a href="https://github.com/DAFZIE" class="social-link">GitHub</a>
-                        <a href="https://linkedin.com/in/daffa-akmal-mahaya-pasaribu-1aa14332b/" class="social-link">LinkedIn</a>
-                        <a href="mailto:daffa.akmal.p2000@gmail.com" class="social-link">Email</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="hero" id="profile">
-            <div class="container hero-grid">
-                <div class="hero-identity">
-                    <h1>Skills and Hobbies</h1>
-                </div>
-                <div class="hero-photo">
-                    <div class="photo-block"></div>
-                    <img class="avatar" src="/static/img/art.png" alt="Art">
-                    <p class="photo-caption">One of the arts that I made</p>
-                </div>
-                <div class="hero-details">
-                    <ul class="skills">
-                            <li>• Python</li>
-                            <li>• Java</li>
-                            <li>• Luau</li>
-                            <li>• Digital Art</li>
-                            <li>• Rubik's Cube</li>
-                            <li>• Content Creation</li>
-                        </ul>
-                    <div class="social-links">
-                        <a href="https://www.youtube.com/@Daffasuper" class="social-link">Youtube Channel</a>
-                        <a href="https://www.roblox.com/games/76511758977637/Sudden-Bombs" class="social-link">Contributed ROBLOX Game</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
-        </div>
-    </footer>
+{% extends 'base.html' %}
+{% block content %}
+  <main>
+      <section class="hero" id="profile">
+          <div class="container hero-grid">
+              <div class="hero-identity">
+                  <p class="hero-kicker">Computer Science &middot; Universitas Indonesia</p>
+                  <h1>Daffa Akmal Mahadaya Pasaribu</h1>
+              </div>
+              <div class="hero-photo">
+                  <div class="photo-block"></div>
+                  <img class="avatar" src="/static/img/Daffa.gif" alt="Photo of {{ name }}">
+                  <p class="photo-caption">Commisioned art of my furry character</p>
+              </div>
+              <div class="hero-details">
+                  <p class="bio">{{ bio }}</p>
+                  <dl class="meta-list">
+                      <div class="meta-row">
+                          <dt>NPM</dt>
+                          <dd>{{ npm }}</dd>
+                      </div>
+                      <div class="meta-row">
+                          <dt>Program</dt>
+                          <dd>{{ study_program }}</dd>
+                      </div>
+                  </dl>
+                  <div class="social-links">
+                      <a href="https://github.com/DAFZIE" class="social-link">GitHub</a>
+                      <a href="https://linkedin.com/in/daffa-akmal-mahaya-pasaribu-1aa14332b/" class="social-link">LinkedIn</a>
+                      <a href="mailto:daffa.akmal.p2000@gmail.com" class="social-link">Email</a>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="hero" id="profile">
+          <div class="container hero-grid">
+              <div class="hero-identity">
+                  <h1>Skills and Hobbies</h1>
+              </div>
+              <div class="hero-photo">
+                  <div class="photo-block"></div>
+                  <img class="avatar" src="/static/img/art.png" alt="Art">
+                  <p class="photo-caption">One of the arts that I made</p>
+              </div>
+              <div class="hero-details">
+                  <ul class="skills">
+                          <li>• Python</li>
+                          <li>• Java</li>
+                          <li>• Luau</li>
+                          <li>• Digital Art</li>
+                          <li>• Rubik's Cube</li>
+                          <li>• Content Creation</li>
+                      </ul>
+                  <div class="social-links">
+                      <a href="https://www.youtube.com/@Daffasuper" class="social-link">Youtube Channel</a>
+                      <a href="https://www.roblox.com/games/76511758977637/Sudden-Bombs" class="social-link">Contributed ROBLOX Game</a>
+                  </div>
+              </div>
+          </div>
+      </section>
+  </main>
+{% endblock content %}
+  <footer class="site-footer">
+      <div class="container">
+          <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
+      </div>
+  </footer>
 </body>
 </html>
