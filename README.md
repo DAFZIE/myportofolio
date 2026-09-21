@@ -27,3 +27,16 @@ makemigration -> membuat migration berdasarkan perubahan di models.py
 migrate       -> menerapkan migration ke database
 
 KETERANGAN AI: Saya menggunakan AI untuk menjelaskan lebih dalam alur jalannya urls dan migration pada Django. Saya juga menggunakan AI untuk fact-checking jawaban saya pada pertanyaan refleksi. Saya hanya menggunakan GPT 5.6 Luna (Gratis)
+
+### Tugas 3
+https://pbp.cs.ui.ac.id/assignments/individual/tugas-3.html#pertanyaan-reflektif
+
+1. Kita menggunakan ModelForm agar bisa lebih cepat membuat kolom kolom form sesuai dengan model yang udah dibuat. Ada juga fitur-fitur tambahan yang bisa development lebih efisien tanpa meng-rewrite code kita. 
+
+{% csrf_token %} wajib dipakai di form untuk memverify bahwa POST asli berasal dari form yang dirender dari server kita sendiri, bukan thirdparty
+
+2. Karena JSON lebih simpel dan lebih mudah digunakan dibandingkan XML. XML memerlukan aturan-aturan yang lebih rumit dibandingkan JSON yang hanya terdiri dari sekumpulan map/dictionary yang mudah terpakai pada JavaScript.
+
+3. Saat fungsi view seperti get_education_json di call, alurnya dimulai dari view yang mengambil data dari database melalui django ORM, yang menghasilkan queryset berisi objek-objeck model python. Karena objek-objek ini kompleks, tidak bisa dikirim melalui HTTP sebagai teks. Maka harus diubah menjadi JSON melalui serialization. Setelah diubah menjadi JSON maka bisa dikirim melalui HTTP.
+
+KETERANGAN AI: Saya menggunakan AI untuk membuat model baru "Education" karena saya rasa task ini tidak memerlukan daya pikir yang terlalu dalam karena semua fiturnya sudah saya kembangkan di dalam Experience dan Project. Saya juga mendapat bantuan dalam membuat fitur Update dan saat mengerjakan soal refleksi 3. Saya menggunakan GPT 5.6 Luna (Gratis) dan Claude Sonnet 5 (Gratis).
