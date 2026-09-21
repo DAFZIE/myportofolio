@@ -136,6 +136,42 @@ def get_experience_json(request):
     return HttpResponse(experience_json, content_type="application/json")
 
 
+def update_experience(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+    form = ExperienceForm(request.POST or None, instance=experience)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Experience berhasil diperbarui!")
+        return redirect("main:show_experience")
+
+    context = {
+        "name": "Daffa Akmal Mahadaya Pasaribu",
+        "name_short": "Daffa",
+        "form": form,
+        "experience": experience,
+    }
+    return render(request, "experience_form.html", context)
+
+
+def update_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    form = ProjectForm(request.POST or None, instance=project)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Project berhasil diperbarui!")
+        return redirect("main:show_project")
+
+    context = {
+        "name": "Daffa Akmal Mahadaya Pasaribu",
+        "name_short": "Daffa",
+        "form": form,
+        "project": project,
+    }
+    return render(request, "project_form.html", context)
+
+
 # def show_project(request):
 #     context = {
 #         "name": "Daffa Akmal Mahadaya Pasaribu",
