@@ -156,4 +156,6 @@ MAILERS = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ["https://daffa-akmal51-myportofolio.pws.cs.ui.ac.id/"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://daffa-akmal51-myportofolio.pws.cs.ui.ac.id",
+]
