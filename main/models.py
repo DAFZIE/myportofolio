@@ -42,3 +42,28 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Education(models.Model):
+    EDUCATION_CHOICES = [
+        ("SD", "SD"),
+        ("SMP", "SMP"),
+        ("SMA", "SMA"),
+        ("S1", "S1"),
+        ("S2", "S2"),
+        ("S3", "S3"),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    level = models.CharField(max_length=10, choices=EDUCATION_CHOICES)
+    started_at = models.DateTimeField()
+    ended_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.level})"
+
+    @property
+    def is_ongoing(self):
+        return self.ended_at is None
