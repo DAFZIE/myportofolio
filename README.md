@@ -40,3 +40,10 @@ https://pbp.cs.ui.ac.id/assignments/individual/tugas-3.html#pertanyaan-reflektif
 3. Saat fungsi view seperti get_education_json di call, alurnya dimulai dari view yang mengambil data dari database melalui django ORM, yang menghasilkan queryset berisi objek-objeck model python. Karena objek-objek ini kompleks, tidak bisa dikirim melalui HTTP sebagai teks. Maka harus diubah menjadi JSON melalui serialization. Setelah diubah menjadi JSON maka bisa dikirim melalui HTTP.
 
 KETERANGAN AI: Saya menggunakan AI untuk membuat model baru "Education" karena saya rasa task ini tidak memerlukan daya pikir yang terlalu dalam karena semua fiturnya sudah saya kembangkan di dalam Experience dan Project. Saya juga mendapat bantuan dalam membuat fitur Update dan saat mengerjakan soal refleksi 3. Saya menggunakan GPT 5.6 Luna (Gratis) dan Claude Sonnet 5 (Gratis).
+
+### Tugas 4
+https://pbp.cs.ui.ac.id/assignments/individual/tugas-4.html
+
+Pada tugas kali ini tidak ada pertanyaan reflektif. 
+
+KETERANGAN AI: Saya menggunakan AI untuk membantu debugging hal-hal yang terlewatkan. Pada tugas kali ini saya mendapat beberapa eror yang saya memang saya sulit temukan dan terlewat tanpa bantuan AI. Saya hanya menggunakan GPT 5.6 Luna (Gratis).

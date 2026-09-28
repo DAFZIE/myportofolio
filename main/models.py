@@ -22,6 +22,10 @@ class Experience(models.Model):
     started_at = models.DateTimeField()
     ended_at = models.DateTimeField(blank=True, null=True)
 
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_experience", blank=True
+    )
+
     def __str__(self):
         return self.title
 
@@ -43,7 +47,7 @@ class Project(models.Model):
     project_url = models.URLField(blank=True)
 
     starred_by = models.ManyToManyField(
-        User, related_name="starred_projects", blank=True
+        User, related_name="starred_project", blank=True
     )
 
     def __str__(self):
@@ -66,6 +70,10 @@ class Education(models.Model):
     level = models.CharField(max_length=10, choices=EDUCATION_CHOICES)
     started_at = models.DateTimeField()
     ended_at = models.DateTimeField(blank=True, null=True)
+
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_education", blank=True
+    )
 
     def __str__(self):
         return f"{self.title} ({self.level})"
