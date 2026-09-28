@@ -162,7 +162,7 @@ def delete_project(request, project_id):
 
 
 @login_required(login_url="/login/")
-def toggle_star(request, project_id):
+def toggle_star_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
     if request.method == "POST":
@@ -172,6 +172,32 @@ def toggle_star(request, project_id):
             project.starred_by.add(request.user)
 
     return redirect("main:show_project")
+
+
+@login_required(login_url="/login/")
+def toggle_star_experience(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+
+    if request.method == "POST":
+        if request.user in experience.starred_by.all():
+            experience.starred_by.remove(request.user)
+        else:
+            experience.starred_by.add(request.user)
+
+    return redirect("main:show_experience")
+
+
+@login_required(login_url="/login/")
+def toggle_star_education(request, education_id):
+    education = get_object_or_404(Education, pk=education_id)
+
+    if request.method == "POST":
+        if request.user in education.starred_by.all():
+            education.starred_by.remove(request.user)
+        else:
+            education.starred_by.add(request.user)
+
+    return redirect("main:show_education")
 
 
 def delete_experience(request, experience_id):
@@ -205,11 +231,17 @@ def get_experience_json(request):
     if title_query:
         experience = experience.filter(title__icontains=title_query)
 
-    experience_json = serializers.serialize("json", experience)
+    experience_json = serializers.serialize(
+        "json", experience, use_natural_foreign_keys=True  # Tambahkan argumen ini
+    )
     return HttpResponse(experience_json, content_type="application/json")
 
 
 def update_experience(request, experience_id):
+
+    if not (request.user.is_superuser or request.user.has_perm("main.change_project")):
+        raise PermissionDenied
+
     experience = get_object_or_404(Experience, pk=experience_id)
     form = ExperienceForm(request.POST or None, instance=experience)
 
@@ -228,6 +260,10 @@ def update_experience(request, experience_id):
 
 
 def update_project(request, project_id):
+
+    if not (request.user.is_superuser or request.user.has_perm("main.change_project")):
+        raise PermissionDenied
+
     project = get_object_or_404(Project, pk=project_id)
     form = ProjectForm(request.POST or None, instance=project)
 
@@ -281,6 +317,10 @@ def create_education(request):
 
 
 def update_education(request, education_id):
+
+    if not (request.user.is_superuser or request.user.has_perm("main.change_project")):
+        raise PermissionDenied
+
     education = get_object_or_404(Education, pk=education_id)
     form = EducationForm(request.POST or None, instance=education)
 
@@ -316,7 +356,9 @@ def get_education_json(request):
     if title_query:
         education = education.filter(title__icontains=title_query)
 
-    education_json = serializers.serialize("json", education)
+    education_json = serializers.serialize(
+        "json", education, use_natural_foreign_keys=True  # Tambahkan argumen ini
+    )
     return HttpResponse(education_json, content_type="application/json")
 
 

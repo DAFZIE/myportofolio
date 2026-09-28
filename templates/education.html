@@ -37,8 +37,13 @@
                             <p class="experience-description">{{ education.description }}</p>
                             <div class="project-card-actions">
                                 <div class="project-actions">
-                                    <a href="{% url 'main:update_education' education.id %}" class="button">Edit</a>
-                                    {% include "components/education_delete_modal.html" with education=education %}
+                                    {% include "components/education_star.html" with education=education %}
+                                    {% if user.is_superuser %}
+                                        {% include "components/education_delete_modal.html" with education=education %}
+                                        <a href="{% url 'main:update_education' education.id %}" class="button">Edit</a>
+                                    {% elif perms.main.change_project %}
+                                        <a href="{% url 'main:update_education' education.id %}" class="button">Edit</a>
+                                    {% endif %}  
                                 </div>
                             </div>
                         </article>
