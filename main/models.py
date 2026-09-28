@@ -1,4 +1,6 @@
 import uuid
+
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -39,6 +41,10 @@ class Project(models.Model):
     description = models.TextField()
     category = models.CharField(max_length=20, choices=PROJECT_CHOICES)
     project_url = models.URLField(blank=True)
+
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_projects", blank=True
+    )
 
     def __str__(self):
         return self.title
