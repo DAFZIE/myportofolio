@@ -100,6 +100,7 @@ def show_project(request):
         "name": "Daffa Akmal Mahadaya Pasaribu",
         "name_short": "Daffa",
         "title_query": title_query,
+        "form": ProjectForm(),
     }
     return render(request, "project.html", context)
 
