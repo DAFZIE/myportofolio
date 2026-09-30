@@ -10,6 +10,7 @@ from main.models import Experience, Project, Education
 from main.forms import ProjectForm, ExperienceForm, EducationForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
 
 
 def logout_user(request):
@@ -93,19 +94,11 @@ def show_experience(request):
 
 
 def show_project(request):
-    json_response = get_project_json(request)
-
-    project = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    project = [project.object for project in project]
     title_query = request.GET.get("title", "").strip()
 
     context = {
         "name": "Daffa Akmal Mahadaya Pasaribu",
         "name_short": "Daffa",
-        "project_list": project,
         "title_query": title_query,
     }
     return render(request, "project.html", context)
@@ -213,15 +206,34 @@ def delete_experience(request, experience_id):
 
 def get_project_json(request):
     title_query = request.GET.get("title", "").strip()
-    project = Project.objects.all()
+    project = Project.objects.prefetch_related("starred_by").all()
 
     if title_query:
         project = project.filter(title__icontains=title_query)
 
-    project_json = serializers.serialize(
-        "json", project, use_natural_foreign_keys=True  # Tambahkan argumen ini
-    )
-    return HttpResponse(project_json, content_type="application/json")
+    data = []
+    for pr in project:
+        starred_users = pr.starred_by.all()
+        is_starred = (
+            request.user in starred_users if request.user.is_authenticated else False
+        )
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+        data.append(
+            {
+                "pk": str(pr.id),
+                "fields": {
+                    "title": pr.title,
+                    "description": pr.description,
+                    "category": pr.get_category_display(),
+                    "project_url": pr.project_url,
+                    "star_count": starred_users.count(),
+                    "is_starred": is_starred,
+                    "starred_by_names": starred_by_names,
+                },
+            }
+        )
+    return JsonResponse(data, safe=False)
 
 
 def get_experience_json(request):
