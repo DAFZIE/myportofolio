@@ -578,6 +578,7 @@ h1, .brand {
 .toast-message {
     font-size: 0.85rem;
     color: var(--text-muted);
+    white-space: pre;
 }
 
 /* Modifikasi border kiri berdasarkan tipe notifikasi */
