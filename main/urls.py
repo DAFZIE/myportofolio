@@ -23,6 +23,7 @@ from main.views import (
     toggle_star_project,
     toggle_star_education,
     toggle_star_experience,
+    create_project_ajax,
 )
 
 app_name = "main"
@@ -76,4 +77,5 @@ urlpatterns = [
         toggle_star_experience,
         name="toggle_star_experience",
     ),
+    path("projects/add-ajax/", create_project_ajax, name="create_project_ajax"),
 ]
