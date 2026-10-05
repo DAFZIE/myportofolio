@@ -169,3 +169,21 @@ class EducationForm(ModelForm):
                 }
             ),
         }
+
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data["title"]).strip()
+        if not title:
+            raise ValidationError("Nama education tidak boleh hanya berisi tag HTML.")
+        return title
+
+    def clean_category(self):
+        category = strip_tags(self.cleaned_data["category"]).strip()
+        return category
+
+    def clean_description(self):
+        description = strip_tags(self.cleaned_data["description"]).strip()
+        if not description:
+            raise ValidationError(
+                "Deskripsi education tidak boleh hanya berisi tag HTML."
+            )
+        return description
