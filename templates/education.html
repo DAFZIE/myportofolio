@@ -9,11 +9,15 @@
                 <p class="section-kicker">Perjalanan pendidikan saya</p>
                 <div class="project-header">
                     <h1>Education</h1>
-                    <a href="{% url 'main:create_education' %}"
-                       class="button project-add-button">
+                    {% if user.is_superuser %}
+                    <button type="button"
+                            class="button project-add-button"
+                            popovertarget="add-education-modal">
                         <span aria-hidden="true">+</span>
                         Tambah Education
-                    </a>
+                    </button>
+                    {% endif %}  
+
                 </div>
                 <form id="project-search-form" class="project-search">
                     <input type="search"
@@ -47,7 +51,10 @@
         </section>
     </main>
 
-    
+    {% if user.is_superuser %}
+        {% include "components/education_form_modal.html" %}
+    {% endif %}
+
     <script>
     // Konfigurasi
     const BASE_EDUCATION_ENDPOINT = "{% url 'main:get_education_json' %}";
@@ -73,7 +80,16 @@
         gridContainer.classList.toggle('hide', !showGrid);
     }
 
-    // Membuat elemen card project
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
+
+    // Membuat elemen card education
     function buildEducationCardElement(item) {
         const education = item.fields;
         const educationId = item.pk;
@@ -82,11 +98,11 @@
         articleElement.className = 'experience-card';
 
         const imageHtml = education.education_image_url 
-            ? `<img src="${education.education_image_url}" alt="Gambar ${education.title}" class="project-image">`
+            ? `<img src="${escapeHtml(education.education_image_url)}" alt="Gambar ${escapeHtml(education.title)}" class="project-image">`
             : '';
 
         const urlHtml = education.education_url 
-            ? `<a href="${education.education_url}" class="button">Lihat Education</a>`
+            ? `<a href="${escapeHtml(education.education_url)}" class="button">Lihat Education</a>`
             : '';
 
         // Dummy UUID digunakan untuk digantikan oleh ID asli dari data JSON
@@ -106,24 +122,21 @@
             : '';
 
         const editHtml = (IS_SUPERUSER ||  IS_EDITOR)
-            ? `<form method="post" action="${editUrl}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="button" onclick="return confirm('Edit education ini?');">Edit</button>
-            </form>`
+            ? `<a href="${editUrl}" class="button">Edit</a>`
             : '';
 
         const isStarredClass = education.is_starred ? " is-starred" : "";
         const starText = education.is_starred ? "Unstar" : "Star";
         const starTitle = education.star_count > 0 
-            ? `Dibintangi oleh ${education.starred_by_names}` 
+            ? `Dibintangi oleh ${escapeHtml(education.starred_by_names)}` 
             : "Jadilah yang pertama memberi star";
 
         // Komponen card
         const completeCardHtml = `
             ${imageHtml}
-            <h2>${education.title}</h2>
-            <span class="experience-category">${education.tech_stack}</span>
-            <p class="experience-description">${education.description}</p>
+            <h2>${escapeHtml(education.title)}</h2>
+            <span class="experience-category">${escapeHtml(education.level)}</span>
+            <p class="experience-description">${escapeHtml(education.description)}</p>
             <div class="project-card-actions">
                 <div class="project-actions">
                     ${urlHtml}
@@ -140,6 +153,7 @@
                     </form>
 
                     ${deleteHtml}
+                    ${editHtml}
                 </div>
             </div>
         `;
@@ -148,7 +162,7 @@
         return articleElement;
     }
 
-    // Fetch data project
+    // Fetch data education
     async function fetchEducation(searchQuery = "") {
         if (educationAbortController) educationAbortController.abort();
         educationAbortController = new AbortController();
@@ -165,7 +179,7 @@
 
             if (!response.ok) throw new Error('Failed to fetch data');
 
-            const educationtData = await response.json();
+            const educationData = await response.json();
 
             if (educationData.length === 0) {
                 displayPageSection({ showEmpty: true });
@@ -183,23 +197,27 @@
         }
     }
 
-    function searchProjects() {
-        fetchProjects(searchInput.value.trim());
+    function searchEducation() {
+        fetchEducation(searchInput.value.trim());
     }
 
     searchInput.addEventListener("input", function() {
         clearTimeout(searchDebounceTimer);
 
         searchDebounceTimer = setTimeout(function() {
-            searchProjects();
+            searchEducation();
         }, SEARCH_DEBOUNCE_DELAY);
     });
 
     searchForm.addEventListener("submit", function(event) {
         event.preventDefault();
         clearTimeout(searchDebounceTimer);
-        searchProjects();
+        searchEducation();
     });
+
+    function closeEducationModal() {
+        document.getElementById("add-education-modal").hidePopover();
+    }
     // Start application
     fetchEducation(searchInput.value.trim());
     </script>

@@ -304,7 +304,7 @@ def show_education(request):
         "title_query": title_query,
         "form": EducationForm(),
     }
-    return render(request, "project.html", context)
+    return render(request, "education.html", context)
 
 
 def create_education(request):
