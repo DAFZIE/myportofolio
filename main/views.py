@@ -296,22 +296,15 @@ def update_project(request, project_id):
 
 
 def show_education(request):
-    json_response = get_education_json(request)
-
-    education = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    education = [education.object for education in education]
     title_query = request.GET.get("title", "").strip()
 
     context = {
         "name": "Daffa Akmal Mahadaya Pasaribu",
         "name_short": "Daffa",
-        "education_list": education,
         "title_query": title_query,
+        "form": EducationForm(),
     }
-    return render(request, "education.html", context)
+    return render(request, "project.html", context)
 
 
 def create_education(request):
@@ -364,16 +357,46 @@ def delete_education(request, education_id):
 
 
 def get_education_json(request):
+    # title_query = request.GET.get("title", "").strip()
+    # education = Education.objects.all()
+
+    # if title_query:
+    #     education = education.filter(title__icontains=title_query)
+
+    # education_json = serializers.serialize(
+    #     "json", education, use_natural_foreign_keys=True  # Tambahkan argumen ini
+    # )
+    # return HttpResponse(education_json, content_type="application/json")
     title_query = request.GET.get("title", "").strip()
-    education = Education.objects.all()
+    education = Education.objects.prefetch_related("starred_by").all()
 
     if title_query:
         education = education.filter(title__icontains=title_query)
 
-    education_json = serializers.serialize(
-        "json", education, use_natural_foreign_keys=True  # Tambahkan argumen ini
-    )
-    return HttpResponse(education_json, content_type="application/json")
+    data = []
+    for ed in education:
+        starred_users = ed.starred_by.all()
+        is_starred = (
+            request.user in starred_users if request.user.is_authenticated else False
+        )
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+        data.append(
+            {
+                "pk": str(ed.id),
+                "fields": {
+                    "title": ed.title,
+                    "description": ed.description,
+                    "level": ed.get_level_display(),
+                    "star_count": starred_users.count(),
+                    "is_starred": is_starred,
+                    "started_at": ed.started_at,
+                    "ended_at": ed.ended_at,
+                    "starred_by_names": starred_by_names,
+                },
+            }
+        )
+    return JsonResponse(data, safe=False)
 
 
 @require_POST
