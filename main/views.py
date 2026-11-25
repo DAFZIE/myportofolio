@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from main.permissions import can_edit_education
 
 
 def logout_user(request):
@@ -275,7 +276,7 @@ def update_experience(request, experience_id):
 
 def update_project(request, project_id):
 
-    if not (request.user.is_superuser or request.user.has_perm("main.change_project")):
+    if not request.user.is_superuser:
         raise PermissionDenied
 
     project = get_object_or_404(Project, pk=project_id)
@@ -303,11 +304,14 @@ def show_education(request):
         "name_short": "Daffa",
         "title_query": title_query,
         "form": EducationForm(),
+        "can_edit_education": can_edit_education(request.user),
     }
     return render(request, "education.html", context)
 
 
 def create_education(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
     form = EducationForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -325,7 +329,7 @@ def create_education(request):
 
 def update_education(request, education_id):
 
-    if not (request.user.is_superuser or request.user.has_perm("main.change_project")):
+    if not can_edit_education(request.user):
         raise PermissionDenied
 
     education = get_object_or_404(Education, pk=education_id)
@@ -346,6 +350,8 @@ def update_education(request, education_id):
 
 
 def delete_education(request, education_id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
     education = get_object_or_404(Education, pk=education_id)
 
     if request.method == "POST":

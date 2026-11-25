@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block meta %}
     <title>{% if education %}Edit{% else %}Add{% endif %} Education - {{ name }}</title>
 {% endblock meta %}
@@ -7,7 +8,9 @@
         <section class="experience-section">
             <div class="container">
                 <h1>{% if education %}Edit Education{% else %}Add New Education{% endif %}</h1>
-                <form method="post"
+                <form id="education-detail-form" method="post"
+                      data-api-url="{% if education %}{% url 'api:education-detail' education.id %}{% else %}{% url 'api:education-list' %}{% endif %}"
+                      data-api-method="{% if education %}PATCH{% else %}POST{% endif %}"
                       action="{% if education %}{% url 'main:update_education' education.id %}{% else %}{% url 'main:create_education' %}{% endif %}"
                       class="project-form">
                     {% csrf_token %}
@@ -23,9 +26,11 @@
                     <button type="submit" class="button">
                         {% if education %}Simpan Perubahan{% else %}Tambah Education{% endif %}
                     </button>
-                    <a href="{% url 'main:show_education' %}" class="button button-secondary">Batal</a>
+                    <a href="{% url 'main:show_education' %}" class="button button-secondary">Kembali ke Education</a>
+                    <p id="education-save-status" role="status" aria-live="polite"></p>
                 </form>
             </div>
         </section>
     </main>
+    <script src="{% static 'js/education_form.js' %}" defer></script>
 {% endblock content %}

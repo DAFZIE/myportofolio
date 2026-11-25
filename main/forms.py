@@ -158,12 +158,12 @@ class EducationForm(ModelForm):
                     "placeholder": "SD, SMP, SMA, S1, S2, S3",
                 }
             ),
-            "started_at": DateTimeInput(
+            "started_at": DateTimeInput(format="%Y-%m-%dT%H:%M",
                 attrs={
                     "type": "datetime-local",
                 }
             ),
-            "ended_at": DateTimeInput(
+            "ended_at": DateTimeInput(format="%Y-%m-%dT%H:%M",
                 attrs={
                     "type": "datetime-local",
                 }
